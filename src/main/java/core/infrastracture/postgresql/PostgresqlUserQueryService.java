@@ -17,11 +17,11 @@ public class PostgresqlUserQueryService implements UserQueryService {
       StringBuilder query = new StringBuilder();
       query
           .append("SELECT ")
-            .append("USER_ID id ")
+            .append("ID id ")
             .append(",EMAIL email ")
             .append(",USER_NAME userName ")
             .append(",USER_ROLE userRole ")
-            .append(client.manageColumns())
+            .append(client.queryManageColumns())
           .append("FROM ")
             .append("USERS ");
       return connection.createQuery(query.toString())

@@ -13,4 +13,6 @@ public interface Entity<I extends Id> {
   UserId getUpdatedBy();
 
   LocalDateTime getUpdatedAt();
+
+  boolean isNew();
 }

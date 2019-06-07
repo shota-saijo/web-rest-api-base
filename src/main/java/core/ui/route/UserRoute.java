@@ -23,6 +23,7 @@ public class UserRoute extends Route {
   public EndpointGroup bindRoutes() {
     return () -> {
       get(controller.users());
+      post(controller.create());
     };
   }
 }

@@ -28,6 +28,7 @@ public abstract class AbstractEntity<I extends Id> implements Entity<I> {
     updatedAt = now;
   }
 
+  @Override
   public boolean isNew() {
     return createdAt.isEqual(updatedAt);
   }
