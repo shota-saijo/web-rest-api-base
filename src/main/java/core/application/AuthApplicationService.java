@@ -2,33 +2,33 @@ package core.application;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import core.application.exception.UnauthorizationException;
+import core.domain.service.Auth;
 import core.domain.service.AuthQueryService;
 import core.domain.service.UserQueryService;
-import core.domain.write.model.Auth;
-import core.domain.write.model.Password;
 import core.domain.write.model.Token;
 import core.domain.write.model.UserId;
 import core.ui.controller.AuthController.LoginCommand;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Objects;
 import lombok.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class AuthApplicationService {
 
   private Config config;
+  private UserQueryService userQueryService;
   private AuthQueryService authQueryService;
 
   @Inject
-  public AuthApplicationService(Config config, AuthQueryService authQueryService) {
+  public AuthApplicationService(Config config, UserQueryService userQueryService, AuthQueryService authQueryService) {
     this.config = config;
+    this.userQueryService = userQueryService;
     this.authQueryService = authQueryService;
   }
 
@@ -52,19 +52,14 @@ public class AuthApplicationService {
   }
 
   public LoginResult login(LoginCommand loginCommand) {
-    UserId userId = UserId.of(loginCommand.getUserId());
-    Password password = Password.of(loginCommand.getPassword());
+    Auth auth = authQueryService.findByEmail(loginCommand.getEmail());
 
-    Auth auth = authQueryService.findByUserId(userId);
-
-    if (Objects.isNull(auth)) {
-      throw new UnauthorizationException("user not found");
-    }
-
-    if (!Objects.equals(auth.getPassword(), password)) {
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    if (!encoder.matches(loginCommand.getPassword(), auth.getPassword())) {
       throw new UnauthorizationException("password is incorrect");
     }
 
+    UserId userId = UserId.of(auth.getUserId());
     Token token = publishToken(userId);
 
     return new LoginResult(userId, token);

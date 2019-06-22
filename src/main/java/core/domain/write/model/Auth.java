@@ -2,7 +2,9 @@ package core.domain.write.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @AllArgsConstructor
 @Getter
 public class Auth extends AbstractEntity<UserId> {

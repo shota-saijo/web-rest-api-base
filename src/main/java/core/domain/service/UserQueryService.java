@@ -8,5 +8,7 @@ public interface UserQueryService {
 
   List<User> findAll();
 
-  User find(UserId userId);
+  User findById(UserId userId);
+
+  User findByEmail(String email);
 }

@@ -35,7 +35,7 @@ public class PostgresqlUserQueryService implements UserQueryService {
   }
 
   @Override
-  public User find(UserId userId) {
+  public User findById(UserId userId) {
     try (Connection connection = client.open()) {
       StringBuilder query = new StringBuilder();
       query
@@ -51,6 +51,27 @@ public class PostgresqlUserQueryService implements UserQueryService {
           .append("ID = :userId");
       return connection.createQuery(query.toString())
           .addParameter("userId", userId.toString())
+          .executeAndFetchFirst(User.class);
+    }
+  }
+
+  @Override
+  public User findByEmail(String email) {
+    try (Connection connection = client.open()) {
+      StringBuilder query = new StringBuilder();
+      query
+          .append("SELECT ")
+          .append("ID id ")
+          .append(",EMAIL email ")
+          .append(",USER_NAME userName ")
+          .append(",USER_ROLE userRole ")
+          .append(client.queryManageColumns())
+          .append("FROM ")
+          .append("USERS ")
+          .append("WHERE ")
+          .append("EMAIL = :email");
+      return connection.createQuery(query.toString())
+          .addParameter("email", email)
           .executeAndFetchFirst(User.class);
     }
   }

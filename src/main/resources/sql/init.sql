@@ -2,7 +2,7 @@ GRANT ALL PRIVILEGES ON DATABASE seed TO seed_user;
 
 CREATE TABLE IF NOT EXISTS users (
   id text primary key,
-  email text not null,
+  email text not null unique,
   user_name text,
   user_role text,
   created_by text not null,

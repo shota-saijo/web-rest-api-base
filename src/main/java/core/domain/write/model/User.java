@@ -3,7 +3,9 @@ package core.domain.write.model;
 import io.javalin.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @AllArgsConstructor
 @Getter
 public class User extends AbstractEntity<UserId> {

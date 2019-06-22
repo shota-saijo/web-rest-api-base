@@ -4,7 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class Password extends StringValueObject {
 
-  private Password(String value) {
+  public Password(String value) {
     super(value);
   }
 

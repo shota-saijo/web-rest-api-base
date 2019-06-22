@@ -13,7 +13,7 @@ public class Token extends StringValueObject {
     if (Objects.isNull(value)) {
       throw new TokenInvalidException("token is not null");
     }
-    if (value.startsWith("Bearer ")) {
+    if (!value.startsWith("Bearer ")) {
       throw new TokenInvalidException("token must start with 'Bearer '");
     }
     return new Token(value.replace("Bearer ", ""));

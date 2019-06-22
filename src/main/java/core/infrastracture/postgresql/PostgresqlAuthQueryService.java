@@ -1,9 +1,8 @@
 package core.infrastracture.postgresql;
 
 import com.google.inject.Inject;
+import core.domain.service.Auth;
 import core.domain.service.AuthQueryService;
-import core.domain.write.model.Auth;
-import core.domain.write.model.UserId;
 import org.sql2o.Connection;
 
 public class PostgresqlAuthQueryService implements AuthQueryService {
@@ -16,22 +15,21 @@ public class PostgresqlAuthQueryService implements AuthQueryService {
   }
 
   @Override
-  public Auth findByUserId(UserId userId) {
+  public Auth findByEmail(String email) {
     try (Connection connection = client.open()) {
       StringBuilder query = new StringBuilder();
       query
           .append("SELECT ")
-          .append("ID id ")
-          .append(",PASSWORD password ")
-          .append(",USER_NAME userName ")
-          .append(",USER_ROLE userRole ")
-          .append(client.queryManageColumns())
+            .append("AUTH.ID as userId ")
+            .append(",AUTH.PASSWORD as password ")
           .append("FROM ")
-          .append("AUTH ")
+            .append("USERS ")
+            .append("INNER JOIN AUTH ")
+            .append("ON USERS.ID = AUTH.ID ")
           .append("WHERE ")
-          .append("ID = :userId");
+            .append("USERS.EMAIL = :email ");
       return connection.createQuery(query.toString())
-          .addParameter("userId", userId.toString())
+          .addParameter("email", email)
           .executeAndFetchFirst(Auth.class);
     }
   }

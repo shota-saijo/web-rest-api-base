@@ -40,10 +40,10 @@ public class PostgresqlClient {
   public String queryManageColumns() {
     StringBuilder builder = new StringBuilder();
     builder
-        .append(",CREATED_BY createdBy ")
-        .append(",CREATED_AT createdAt ")
-        .append(",UPDATED_BY updatedBy ")
-        .append(",UPDATED_AT updatedAt ");
+        .append(",CREATED_BY as createdBy ")
+        .append(",CREATED_AT as createdAt ")
+        .append(",UPDATED_BY as updatedBy ")
+        .append(",UPDATED_AT as updatedAt ");
     return builder.toString();
   }
 

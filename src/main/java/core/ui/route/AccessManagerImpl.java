@@ -1,7 +1,6 @@
 package core.ui.route;
 
 import com.google.inject.Inject;
-import com.typesafe.config.Config;
 import core.application.AuthApplicationService;
 import core.application.exception.UnauthorizationException;
 import core.application.model.UserContext;
@@ -24,7 +23,8 @@ public class AccessManagerImpl implements AccessManager {
   private AuthApplicationService authApplicationService;
 
   @Inject
-  public AccessManagerImpl(UserQueryService userQueryService, AuthApplicationService authApplicationService) {
+  public AccessManagerImpl(UserQueryService userQueryService,
+      AuthApplicationService authApplicationService) {
     this.userQueryService = userQueryService;
     this.authApplicationService = authApplicationService;
   }
@@ -37,9 +37,9 @@ public class AccessManagerImpl implements AccessManager {
       return;
     }
 
-    UserId userId = authApplicationService.verifyToken(ctx.header("Authenticate"));
+    UserId userId = authApplicationService.verifyToken(ctx.header("Authorization"));
 
-    User user = userQueryService.find(userId);
+    User user = userQueryService.findById(userId);
 
     if (Objects.isNull(user)) {
       throw new UnauthorizationException("user not found");
@@ -47,7 +47,7 @@ public class AccessManagerImpl implements AccessManager {
 
     UserRole userRole = user.getUserRole();
 
-    if (permittedRoles.contains(userRole)) {
+    if (!permittedRoles.contains(userRole)) {
       throw new UnauthorizationException("user role permit denied");
     }
 
