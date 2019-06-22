@@ -5,12 +5,15 @@ import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import core.domain.repository.AuthRepository;
 import core.domain.repository.UserRepository;
+import core.domain.service.AuthQueryService;
 import core.domain.service.UserCreateFacadeService;
 import core.domain.service.UserQueryService;
+import core.domain.write.model.Auth;
 import core.domain.write.model.User.UserRole;
 import core.infrastracture.converter.LocalDateTimeConverter;
 import core.infrastracture.converter.UserRoleConverter;
 import core.infrastracture.postgresql.PostgresUserCreateFacadeService;
+import core.infrastracture.postgresql.PostgresqlAuthQueryService;
 import core.infrastracture.postgresql.PostgresqlAuthRepository;
 import core.infrastracture.postgresql.PostgresqlUserQueryService;
 import core.infrastracture.postgresql.PostgresqlUserRepository;
@@ -30,6 +33,7 @@ public class CoreModule extends AbstractModule {
     converterBinder.addBinding(UserRole.class).to(UserRoleConverter.class);
 
     bind(UserQueryService.class).to(PostgresqlUserQueryService.class);
+    bind(AuthQueryService.class).to(PostgresqlAuthQueryService.class);
     bind(UserRepository.class).to(PostgresqlUserRepository.class);
     bind(AuthRepository.class).to(PostgresqlAuthRepository.class);
     bind(UserCreateFacadeService.class).to(PostgresUserCreateFacadeService.class);
