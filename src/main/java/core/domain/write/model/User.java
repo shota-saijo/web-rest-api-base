@@ -1,5 +1,6 @@
 package core.domain.write.model;
 
+import io.javalin.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,8 +16,18 @@ public class User extends AbstractEntity<UserId> {
 
   private UserRole userRole;
 
-  public enum UserRole {
-    SU, ADMIN, PUBLIC
+  public enum UserRole implements Role {
+    SU(3), ADMIN(2), PUBLIC(1);
+
+    private int level;
+
+    UserRole(int level) {
+      this.level = level;
+    }
+
+    public int getLevel() {
+      return level;
+    }
   }
 
   public static User create(String email) {

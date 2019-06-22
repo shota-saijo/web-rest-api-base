@@ -1,9 +1,10 @@
 package core.domain.repository;
 
 import core.domain.write.model.User;
-import core.domain.write.model.UserId;
+import org.sql2o.Connection;
 
 public interface UserRepository {
 
-  UserId insert(User user);
+  void insert(User user, Connection conn);
+
 }

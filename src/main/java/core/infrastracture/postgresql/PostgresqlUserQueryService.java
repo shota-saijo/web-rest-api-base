@@ -8,8 +8,12 @@ import org.sql2o.Connection;
 
 public class PostgresqlUserQueryService implements UserQueryService {
 
-  @Inject
   PostgresqlClient client;
+
+  @Inject
+  public PostgresqlUserQueryService(PostgresqlClient client) {
+    this.client = client;
+  }
 
   @Override
   public List<User> findAll() {
