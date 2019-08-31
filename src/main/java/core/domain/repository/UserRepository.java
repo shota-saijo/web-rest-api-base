@@ -7,4 +7,6 @@ public interface UserRepository {
 
   void insert(User user, Connection conn);
 
+  void update(User user);
+
 }

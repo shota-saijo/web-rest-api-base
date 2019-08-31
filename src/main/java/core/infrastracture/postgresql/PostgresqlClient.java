@@ -57,11 +57,27 @@ public class PostgresqlClient {
     return builder.toString();
   }
 
+  public String commandUpdateManageColumns() {
+    StringBuilder builder = new StringBuilder();
+    builder
+        .append(",UPDATED_BY ")
+        .append(",UPDATED_AT ");
+    return builder.toString();
+  }
+
   public String commandManageColumnParameters() {
     StringBuilder builder = new StringBuilder();
     builder
         .append(",:createdBy ")
         .append(",:createdAt ")
+        .append(",:updatedBy ")
+        .append(",:updatedAt ");
+    return builder.toString();
+  }
+
+  public String commandUpdateManageColumnParameters() {
+    StringBuilder builder = new StringBuilder();
+    builder
         .append(",:updatedBy ")
         .append(",:updatedAt ");
     return builder.toString();

@@ -7,7 +7,7 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import core.application.exception.UnauthorizationException;
-import core.domain.service.Auth;
+import core.domain.read.model.Auth;
 import core.domain.service.AuthQueryService;
 import core.domain.service.UserQueryService;
 import core.domain.write.model.Token;

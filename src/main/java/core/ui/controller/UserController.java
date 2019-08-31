@@ -1,8 +1,15 @@
 package core.ui.controller;
 
+import static core.util.MiscUtil.hasValue;
+import static core.util.MiscUtil.isNullOrEmpty;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import core.application.UserApplicationService;
+import core.application.command.UserCommand.ChangeEmailCommand;
+import core.application.command.UserCommand.ChangeNameCommand;
+import core.application.command.UserCommand.CreateCommand;
+import core.application.model.UserContext;
 import io.javalin.Handler;
 import java.util.Objects;
 import lombok.Value;
@@ -26,9 +33,9 @@ public class UserController implements Controller {
     return ctx -> {
       // body => command
       CreateCommand command = ctx.bodyValidator(CreateCommand.class)
-          .check(c -> Objects.nonNull(c.getEmail()))
+          .check(c -> hasValue(c.getEmail()))
           .check(c -> c.getEmail().matches(".+@.+\\..+"))
-          .check(c -> Objects.nonNull(c.getPassword()))
+          .check(c -> isNullOrEmpty(c.getPassword()))
           .check(c -> c.getPassword().length() >= 8)
           .get();
 
@@ -40,44 +47,23 @@ public class UserController implements Controller {
 
   public Handler changeName() {
     return ctx -> {
+      ChangeNameCommand command = ctx.bodyValidator(ChangeNameCommand.class)
+          .check(c -> hasValue(c.getUserName()))
+          .get();
+
+      applicationService.changeName(ctx.pathParam("id"), command);
       ctx.status(HttpStatus.NO_CONTENT_204);
     };
   }
 
   public Handler changeEmail() {
     return ctx -> {
+      ChangeEmailCommand command = ctx.bodyValidator(ChangeEmailCommand.class)
+          .check(c -> hasValue(c.getEmail()))
+          .get();
+
+      applicationService.changeEmail(ctx.pathParam("id"), command);
       ctx.status(HttpStatus.NO_CONTENT_204);
     };
-  }
-
-  public Handler delete() {
-    return ctx -> {
-      ctx.status(HttpStatus.NO_CONTENT_204);
-    };
-  }
-
-  // ============================================================================================
-
-  @Value
-  public static class CreateCommand {
-    private String email;
-    private String password;
-  }
-
-  @Value
-  public static class ChangeNameCommand {
-    private String id;
-    private String userName;
-  }
-
-  @Value
-  public static class ChangeEmailCommand {
-    private String id;
-    private String email;
-  }
-
-  @Value
-  public static class DeleteCommand {
-    private String id;
   }
 }

@@ -44,9 +44,15 @@ public class User extends AbstractEntity<UserId> {
     return user;
   }
 
-  public User changeName(String name) {
+  public User changeName(String name, UserId by) {
     this.userName = name;
-    this.updated(this.id);
+    this.updated(by);
+    return this;
+  }
+
+  public User changeEmail(String email, UserId by) {
+    this.email = email;
+    this.updated(by);
     return this;
   }
 }

@@ -39,4 +39,32 @@ public class PostgresqlUserRepository implements UserRepository {
 
     client.setManageColumnParameters(query, user).executeUpdate();
   }
+
+  @Override
+  public void update(User user) {
+    try (Connection conn = client.beginTransaction()) {
+      StringBuilder sql = new StringBuilder();
+      sql.append("UPDATE USERS SET( ")
+          .append(",EMAIL ")
+          .append(",USER_NAME ")
+          .append(",USER_ROLE ")
+          .append(client.commandUpdateManageColumns())
+          .append(" ) VALUES ( ")
+          .append(",:email ")
+          .append(",:userName ")
+          .append(",:userRole ")
+          .append(client.commandUpdateManageColumnParameters())
+          .append(" ) ")
+          .append("WHERE ")
+          .append("id = :id");
+
+      Query query = conn.createQuery(sql.toString())
+          .addParameter(":id", user.getId().value())
+          .addParameter("email", user.getEmail())
+          .addParameter("userName", user.getUserName())
+          .addParameter("userRole", user.getUserRole().toString());
+
+      query.executeUpdate().commit();
+    }
+  }
 }

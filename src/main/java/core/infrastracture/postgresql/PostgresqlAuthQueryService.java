@@ -1,7 +1,7 @@
 package core.infrastracture.postgresql;
 
 import com.google.inject.Inject;
-import core.domain.service.Auth;
+import core.domain.read.model.Auth;
 import core.domain.service.AuthQueryService;
 import org.sql2o.Connection;
 

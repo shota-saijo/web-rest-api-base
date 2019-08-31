@@ -1,4 +1,4 @@
-package core.domain.service;
+package core.domain.read.model;
 
 import lombok.Value;
 

@@ -1,13 +1,15 @@
 package core.application;
 
 import com.google.inject.Inject;
+import core.application.command.UserCommand.ChangeEmailCommand;
+import core.application.command.UserCommand.ChangeNameCommand;
+import core.application.command.UserCommand.CreateCommand;
 import core.domain.repository.UserRepository;
 import core.domain.service.UserCreateFacadeService;
 import core.domain.service.UserQueryService;
 import core.domain.write.model.Auth;
 import core.domain.write.model.User;
 import core.domain.write.model.UserId;
-import core.ui.controller.UserController.CreateCommand;
 import java.util.List;
 
 public class UserApplicationService {
@@ -39,13 +41,17 @@ public class UserApplicationService {
     return userCreateFacadeService.createUser(user, auth);
   }
 
-  public void changeName() {
+  public void changeName(String id, ChangeNameCommand command) {
+    UserId userId = UserId.of(id);
+    User user = userQueryService.findById(userId);
+    user.changeName(command.getUserName(), userId);
+    userRepository.update(user);
   }
 
-  public void changeEmail() {
-  }
-
-  public void delete() {
-
+  public void changeEmail(String id, ChangeEmailCommand command) {
+    UserId userId = UserId.of(id);
+    User user = userQueryService.findById(userId);
+    user.changeEmail(command.getEmail(), userId);
+    userRepository.update(user);
   }
 }

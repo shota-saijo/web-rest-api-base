@@ -3,6 +3,9 @@ package core;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
+import core.application.command.annotation.AnnotationValidator;
+import core.application.command.annotation.DefaultValidators;
+import core.application.command.annotation.Required;
 import core.domain.repository.AuthRepository;
 import core.domain.repository.UserRepository;
 import core.domain.service.AuthQueryService;
@@ -22,6 +25,7 @@ import core.ui.route.AuthRoute;
 import core.ui.route.Route;
 import core.ui.route.UserRoute;
 import io.javalin.security.AccessManager;
+import java.lang.annotation.Annotation;
 import java.time.LocalDateTime;
 import org.sql2o.converters.Converter;
 

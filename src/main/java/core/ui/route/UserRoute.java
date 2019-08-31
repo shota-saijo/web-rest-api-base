@@ -33,7 +33,6 @@ public class UserRoute extends Route {
       post(controller.create());
       patch(":id/change-name", controller.changeName(), roles(PUBLIC));
       patch(":id/change-email", controller.changeEmail(), roles(PUBLIC));
-      delete(":id", controller.delete(), roles(PUBLIC));
     };
   }
 }
